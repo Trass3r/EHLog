@@ -99,7 +99,7 @@ struct PatchDllCxxThrow
 			return;
 		}
 
-		auto p = _CxxThrowException;
+		ptrdiff_t p = (ptrdiff_t)_CxxThrowException;
 
 #if _M_X64
 		// 48 b8 35 08 40 00 00 00 00 00   mov rax, 0x0000000000400835
@@ -107,7 +107,10 @@ struct PatchDllCxxThrow
 		unsigned char codeBytes[12] = { 0x48, 0xB8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,   0xff, 0xe0 };
 		memcpy(&codeBytes[2], &p, sizeof(void*));
 #elif _M_IX86
-#error "Not implemented yet!"
+		// E9 00000000   jmp rel  displacement relative to next instruction
+		unsigned char codeBytes[5] = { 0xE9, 0x00, 0x00, 0x00, 0x00 };
+		p -= (ptrdiff_t)pOrgEntry + sizeof(codeBytes);
+		memcpy(&codeBytes[1], &p, sizeof(void*));
 #else
 #error "The following code only works for x86 and x64!"
 #endif
