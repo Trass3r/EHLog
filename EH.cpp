@@ -35,11 +35,12 @@ void __stdcall _CxxThrowException(void* exceptionObj,
 		|| !baseOfImage
 #endif
 		);
-
+	{
 	stacktrace::call_stack cs(1);
 	std::string s = cs.to_string();
 
 	printf("\n--------\nException occured: %s\n--------\n", s.c_str());
+	}
 
 	const ULONG_PTR args[] = { pureModule ? EH_PURE_MAGIC1 : EH_MAGIC1,
 	                           (ULONG_PTR)exceptionObj,
