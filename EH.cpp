@@ -83,7 +83,7 @@ struct PatchDllCxxThrow
 #error "not supported"
 #endif
 
-#if _DEBUG || !defined(NDEBUG)
+#if _DEBUG
 		"d"
 #endif
 		".dll");
