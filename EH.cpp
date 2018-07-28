@@ -67,16 +67,17 @@ struct PatchDllCxxThrow
 	PatchDllCxxThrow()
 	{
 		// find the right library
-		HMODULE hmsvc = LoadLibraryA("msvcr"
-
-#if _MSC_VER >= 1900
+		HMODULE hmsvc = LoadLibraryA(
+#if _MSC_VER >= 1920
 #error "not supported yet"
+#elif _MSC_VER >= 1900 // VS 2015-17
+	"vcruntime140"
 #elif _MSC_VER >= 1800 // VS 2013
-	"120"
+	"msvcr120"
 #elif _MSC_VER >= 1700 // VS 2012
-	"110"
+	"msvcr110"
 #elif _MSC_VER >= 1600 // VS 2010
-	"100"
+	"msvcr100"
 #else
 #error "not supported"
 #endif
